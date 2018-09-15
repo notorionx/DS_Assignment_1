@@ -107,14 +107,35 @@ public class KnightMove {
     public void add(Move m) {
         // definition of add per 2
         Move current = head;
-        while(current != null){
+
+        while(current.getNext() != null){
             current = current.getNext();
+        }
+
+        current.setNext(m);
+
+        if(!current.validMoveCheck()){
+            remove();
         }
     }
 
     public Move remove() {
         // Exercise 2 :: should remove the end node + return the move as the output
-        return null;
+        Move last = null;
+        Move current = head;
+
+        if(current.getNext() == null){
+            return last;
+        }
+
+        while(current.getNext().getNext() != null){
+            current = current.getNext();
+        }
+
+        last = current.getNext();
+        current.setNext(null);
+
+        return last;
     }
 
     public Move randomMove() {
