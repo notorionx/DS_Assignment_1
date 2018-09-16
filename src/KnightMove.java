@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class KnightMove {
@@ -66,6 +67,103 @@ public class KnightMove {
             //Move is invalid if above conditions not met
             return false;
         }
+
+        public ArrayList<Move> getValidMoves(){
+
+            //Create move object to test all 8 possible moves
+
+            //Create ArrayList to be populated with all valid moves
+            ArrayList<Move> validMoves = new ArrayList<Move>();
+
+            /*Goes through all 8 variants of L-shaped movement from current position.
+            If validMoveCheck() returns true, m is added to validMoves*/
+            for(int i = 0; i < 8; i++){
+                switch (i) {
+                    case 0:
+                        Move a = new Move();
+                        a.setCol((char) (col - 2));
+                        a.setRow(row - 1);
+                        setNext(a);
+                        if (validMoveCheck()) {
+                            validMoves.add(a);
+                        }
+                        setNext(null);
+                        break;
+                    case 1:
+                        Move b = new Move();
+                        b.setCol((char) (col + 2));
+                        b.setRow(row - 1);
+                        setNext(b);
+                        if (validMoveCheck()) {
+                            validMoves.add(b);
+                        }
+                        setNext(null);
+                        break;
+                    case 2:
+                        Move c = new Move();
+                        c.setCol((char) (col - 2));
+                        c.setRow(row + 1);
+                        setNext(c);
+                        if (validMoveCheck()) {
+                            validMoves.add(c);
+                        }
+                        setNext(null);
+                        break;
+                    case 3:
+                        Move d = new Move();
+                        d.setCol((char) (col + 2));
+                        d.setRow(row + 1);
+                        setNext(d);
+                        if (validMoveCheck()) {
+                            validMoves.add(d);
+                        }
+                        setNext(null);
+                        break;
+                    case 4:
+                        Move e = new Move();
+                        e.setCol((char) (col - 1));
+                        e.setRow(row - 2);
+                        setNext(e);
+                        if (validMoveCheck()) {
+                            validMoves.add(e);
+                        }
+                        setNext(null);
+                        break;
+                    case 5:
+                        Move f = new Move();
+                        f.setCol((char) (col + 1));
+                        f.setRow(row - 2);
+                        setNext(f);
+                        if (validMoveCheck()) {
+                            validMoves.add(f);
+                        }
+                        setNext(null);
+                        break;
+                    case 6:
+                        Move g = new Move();
+                        g.setCol((char) (col - 1));
+                        g.setRow(row + 2);
+                        setNext(g);
+                        if (validMoveCheck()) {
+                            validMoves.add(g);
+                        }
+                        setNext(null);
+                        break;
+                    case 7:
+                        Move h = new Move();
+                        h.setCol((char) (col + 1));
+                        h.setRow(row + 2);
+                        setNext(h);
+                        if (validMoveCheck()) {
+                            validMoves.add(h);
+                        }
+                        setNext(null);
+                        break;
+                }
+            }
+
+            return validMoves;
+        }
     }
 
     private Move head;
@@ -80,6 +178,11 @@ public class KnightMove {
 
     public KnightMove(int k) {
         // Constructor for 5.2
+        head = new Move();
+        for(int i = 0; i < k; i++){
+            randomMove();
+            size++;
+        }
     }
 
     public KnightMove(char[] columns, int[] rows) {
@@ -147,10 +250,8 @@ public class KnightMove {
         Move m = new Move();
 
         if(size == 0){
-            char col = (char)(r.nextInt(8) + 'A');
-            int row = r.nextInt(8) + 1;
-            m.setCol(col);
-            m.setRow(row);
+            m.setCol((char)(r.nextInt(8) + 'A'));
+            m.setRow(r.nextInt(8) + 1);
             add(m);
 
             return m;
@@ -163,12 +264,13 @@ public class KnightMove {
                 tail = tail.getNext();
             }
 
-            char lastCol = tail.getCol();
-            int lastRow = tail.getRow();
+            ArrayList<Move> validMoves = tail.getValidMoves();
 
+            m = validMoves.get(r.nextInt(validMoves.size()));
+            add(m);
+
+            return m;
         }
-
-        return null;
     }
 
     public void printMoves() {
@@ -176,7 +278,14 @@ public class KnightMove {
     }
 
     public static void main(String[] args){
-
+        Move m = new Move();
+        m.setCol('E');
+        m.setRow(5);
+        ArrayList<Move> al = m.getValidMoves();
+        for(int i = 0; i < al.size(); i++){
+            System.out.print(al.get(i).getCol());
+            System.out.println(al.get(i).getRow());
+        }
     }
 
 }
