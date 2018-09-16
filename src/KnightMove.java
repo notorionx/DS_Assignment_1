@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.Random;
 
 public class KnightMove {
 
@@ -74,6 +75,7 @@ public class KnightMove {
 
     public KnightMove() {
         // Initial Constructor for 5.1
+        head = new Move();
     }
 
     public KnightMove(int k) {
@@ -140,6 +142,32 @@ public class KnightMove {
 
     public Move randomMove() {
         // Exercise 4 :: This should return the random move as the output
+
+        Random r = new Random();
+        Move m = new Move();
+
+        if(size == 0){
+            char col = (char)(r.nextInt(8) + 'A');
+            int row = r.nextInt(8) + 1;
+            m.setCol(col);
+            m.setRow(row);
+            add(m);
+
+            return m;
+        }
+
+        else{
+            Move tail = head;
+
+            while(tail.getNext() != null) {
+                tail = tail.getNext();
+            }
+
+            char lastCol = tail.getCol();
+            int lastRow = tail.getRow();
+
+        }
+
         return null;
     }
 
@@ -150,4 +178,5 @@ public class KnightMove {
     public static void main(String[] args){
 
     }
+
 }
