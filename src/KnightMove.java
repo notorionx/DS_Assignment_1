@@ -40,6 +40,10 @@ public class KnightMove {
             return next;
         }
 
+        public String toString(){
+            return (Character.toString(col) + row);
+        }
+
         public boolean validMoveCheck() {
             // Exercise 3
             //Move is valid if there is no next move
@@ -181,11 +185,10 @@ public class KnightMove {
         head = new Move();
         for(int i = 0; i < k; i++){
             randomMove();
-            size++;
         }
     }
 
-    public KnightMove(char[] columns, int[] rows) {
+    public KnightMove(char[] columns, int[] rows) throws IllegalArgumentException{
         // Constructor for 5.3
     }
 
@@ -218,6 +221,7 @@ public class KnightMove {
         }
 
         current.setNext(m);
+        size++;
 
         if(!current.validMoveCheck()){
             remove();
@@ -239,6 +243,7 @@ public class KnightMove {
 
         last = current.getNext();
         current.setNext(null);
+        size--;
 
         return last;
     }
@@ -275,6 +280,7 @@ public class KnightMove {
 
     public void printMoves() {
         // Exercise 6
+        }
     }
 
     public static void main(String[] args){
@@ -283,8 +289,7 @@ public class KnightMove {
         m.setRow(5);
         ArrayList<Move> al = m.getValidMoves();
         for(int i = 0; i < al.size(); i++){
-            System.out.print(al.get(i).getCol());
-            System.out.println(al.get(i).getRow());
+            System.out.println(al.get(i).toString());
         }
     }
 
