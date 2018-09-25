@@ -10,6 +10,15 @@ public class KnightMove {
         private int row;
         private Move next;
 
+        //Constructors
+        public Move(){}
+
+        public Move(char c, int r, Move m){
+            col = c;
+            row = r;
+            next = m;
+        }
+
         //Set column
         public void setCol(char c){
             col = c;
@@ -40,7 +49,11 @@ public class KnightMove {
             return next;
         }
 
-        public boolean validMoveCheck() {
+        public String toString(){
+            return Character.toString(col) + row;
+        }
+
+        public boolean validMoveCheck(){
             // Exercise 3
             //Move is valid if there is no next move
             if(next == null){
@@ -51,6 +64,16 @@ public class KnightMove {
             direction as well as total number of tiles moved*/
             char nextCol = next.getCol();
             int nextRow = next.getRow();
+
+
+            /*If we are calling this method from the head, we only need to check
+            that the next move is in the grid*/
+            if(col == 0 && row == 0){
+                if(nextCol >= 'A' && nextCol <= 'H' && nextRow >= 1 && nextRow <= 8){
+                    return true;
+                }
+            }
+
             int colDiff = Math.abs(nextCol - col);
             int rowDiff = Math.abs(nextRow - row);
             int totalDiff = colDiff + rowDiff;
@@ -66,6 +89,7 @@ public class KnightMove {
             }
             //Move is invalid if above conditions not met
             return false;
+
         }
 
         public ArrayList<Move> getValidMoves(){
@@ -167,30 +191,34 @@ public class KnightMove {
     }
 
     private Move head;
-    private int size = 0;
+    private int size;
 
     // constructors follow per JAVA convention
 
     public KnightMove() {
         // Initial Constructor for 5.1
         head = new Move();
+        size = 0;
     }
 
     public KnightMove(int k) {
         // Constructor for 5.2
         head = new Move();
+        size = 0;
         for(int i = 0; i < k; i++){
             randomMove();
-            size++;
         }
     }
 
-    public KnightMove(char[] columns, int[] rows) {
+    public KnightMove(char[] columns, int[] rows) throws IllegalArgumentException {
         // Constructor for 5.3
+        head = new Move();
+        size = 0;
+        for(int i = 0; i < rows.length; i++){
+            Move m = new Move(columns[i], rows[i], null);
+            add(m);
+        }
     }
-
-    // Initialize with your definition of Move
-    //head = new Move();
 
     public int size() { return size; }
 
@@ -209,18 +237,19 @@ public class KnightMove {
         return null;
     }
 
-    public void add(Move m) {
+    public void add(Move m) throws IllegalArgumentException{
         // definition of add per 2
         Move current = head;
-
         while(current.getNext() != null){
             current = current.getNext();
         }
 
         current.setNext(m);
+        size++;
 
         if(!current.validMoveCheck()){
             remove();
+            throw new IllegalArgumentException("The next move is invalid.");
         }
     }
 
@@ -239,6 +268,7 @@ public class KnightMove {
 
         last = current.getNext();
         current.setNext(null);
+        size--;
 
         return last;
     }
@@ -275,17 +305,36 @@ public class KnightMove {
 
     public void printMoves() {
         // Exercise 6
+        if(size() == 0){
+            System.out.println("The list of moves is empty.");
+        }
+        else{
+            Move current = head;
+            while(current.getNext() != null){
+                current = current.getNext();
+                System.out.print(current.toString());
+                if(current.getNext() != null){
+                    System.out.print(" -> ");
+                }
+            }
+            System.out.println();
+        }
     }
 
     public static void main(String[] args){
-        Move m = new Move();
-        m.setCol('E');
-        m.setRow(5);
-        ArrayList<Move> al = m.getValidMoves();
-        for(int i = 0; i < al.size(); i++){
-            System.out.print(al.get(i).getCol());
-            System.out.println(al.get(i).getRow());
-        }
+//        KnightMove k = new KnightMove(10);
+//        k.printMoves();
+//        System.out.println(k.size());
+//        k.remove();
+//        k.printMoves();
+//        System.out.println(k.size());
+
+        char[] c = {'B','C','B','C'};
+        int[] r = {1,3,5,9};
+        KnightMove kk = new KnightMove(c, r);
+        kk.printMoves();
+        System.out.println(kk.size());
     }
+
 
 }
