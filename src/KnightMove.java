@@ -2,9 +2,9 @@ import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class KnightMove {
+public class KnightMove{
 
-    private static class Move {
+    private static class Move{
         //Instance variables
         private char col;
         private int row;
@@ -219,13 +219,13 @@ public class KnightMove {
     private int size;
 
     //Constructor for 5.1
-    public KnightMove() {
+    public KnightMove(){
         head = new Move();
         size = 0;
     }
 
     //Constructor for 5.2
-    public KnightMove(int k) {
+    public KnightMove(int k){
         head = new Move();
         size = 0;
 
@@ -236,7 +236,7 @@ public class KnightMove {
     }
 
     //Constructor for 5.3
-    public KnightMove(char[] columns, int[] rows) throws IllegalArgumentException {
+    public KnightMove(char[] columns, int[] rows) throws IllegalArgumentException{
         head = new Move();
         size = 0;
 
@@ -253,19 +253,34 @@ public class KnightMove {
         }
     }
 
+    //Return head of linked list
+    public Move getHead(){
+        return head;
+    }
+
     //Return size of linked list
-    public int size() { return size; }
+    public int size(){ return size; }
+
+    //Increase size of linked list
+    public void grow(){
+        size++;
+    }
+
+    //Decrease size of linked list
+    public void shrink(){
+        size--;
+    }
 
 
     // Validator as given in class
-    private Move validate(Move m) throws IllegalArgumentException {
+    private Move validate(Move m) throws IllegalArgumentException{
         if(!(m instanceof Move)) throw new IllegalArgumentException("Invalid Move");
         if(m.getNext() == null) throw new IllegalArgumentException("the move is no longer in the list");
 
         return m;
     }
 
-    public Move nextMove(Move m) throws IllegalArgumentException {
+    public Move nextMove(Move m) throws IllegalArgumentException{
         // should return next move of m, if defined.
         // Otherwise it should catch the error
         return null;
@@ -275,7 +290,7 @@ public class KnightMove {
     //Add Move object to end of linked list
     public void add(Move m) throws IllegalArgumentException{
         //Create new pointer so as not to change the value of head
-        Move current = head;
+        Move current = getHead();
         while(current.getNext() != null){
             //Traverse through the linked list until we are at the last node
             current = current.getNext();
@@ -283,7 +298,7 @@ public class KnightMove {
 
         //Append Move m to last node and increment the size
         current.setNext(m);
-        size++;
+        grow();
 
         if(!current.validMoveCheck()){
             /*Once Move m has been added, we still need to check if it is a valid
@@ -294,7 +309,7 @@ public class KnightMove {
     }
 
     //Remove the last node and return it
-    public Move remove() {
+    public Move remove(){
 
         if(size() == 0){
             //Return null if list is empty
@@ -304,7 +319,7 @@ public class KnightMove {
             /*If list has at least one element, create two pointers, one to
             store the removed node and one to access the second to last node*/
             Move last = null;
-            Move current = head;
+            Move current = getHead();
 
 
             while(current.getNext().getNext() != null){
@@ -317,14 +332,14 @@ public class KnightMove {
             last as null and increment the size*/
             last = current.getNext();
             current.setNext(null);
-            size--;
+            shrink();
 
             //Return the removed node
             return last;
         }
     }
 
-
+    //Makes a random valid move, adds it to the list, and returns it
     public Move randomMove(){
         /*Create Random object which we will use to generate random move, as well as
         an empty Move object which will be added to the end of the linked list*/
@@ -342,13 +357,12 @@ public class KnightMove {
             return m;
         }
         else{
-            /*If list is not empty, we need to traverse to the last move and add
-            a move after it*/
+            //If list is not empty, traverse to the last move and adda move after it
 
             //Create pointer so as not to change the value of head
-            Move current = head;
+            Move current = getHead();
 
-            while(current.getNext() != null) {
+            while(current.getNext() != null){
                 //Traverse until current points to the last move
                 current = current.getNext();
             }
@@ -366,14 +380,14 @@ public class KnightMove {
     }
 
     //Prints all moves in linked list sequentially
-    public void printMoves() {
+    public void printMoves(){
         if(size() == 0){
             //Tell user if list is empty
             System.out.println("The list of moves is empty.");
         }
         else{
             //Create pointer so as not to change the value of head
-            Move current = head;
+            Move current = getHead();
             while(current.getNext() != null){
                 //Traverse through each move in linked list and print string representation
                 current = current.getNext();
@@ -387,6 +401,7 @@ public class KnightMove {
         }
     }
 
+    //Code to test things that are hard to test in JUnit
     public static void main(String[] args){
         KnightMove k = new KnightMove(10);
         k.printMoves();
@@ -400,10 +415,12 @@ public class KnightMove {
         KnightMove kk = new KnightMove(c, r);
         kk.printMoves();
         System.out.println(kk.size());
+        Move m = new Move('E', 6, null);
+        kk.add(m);
+        kk.printMoves();
+        System.out.println(kk.size());
         kk.randomMove();
         kk.printMoves();
         System.out.println(kk.size());
     }
-
-
 }
