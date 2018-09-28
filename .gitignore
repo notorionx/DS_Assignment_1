@@ -2,3 +2,8 @@
 .idea/
 out/
 DS_Assignment_1.iml
+src/index-files/
+src/allclasses-frame.html
+src/allclasses-noframe.html
+src/constant-values.html
+src/deprecated-list.html
